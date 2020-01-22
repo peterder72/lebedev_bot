@@ -28,7 +28,7 @@ class ConfigFile():
     @property
     def last_id(self):
         """Last seen update ID
-        
+
         Returns:
             int -- ID
         """
@@ -93,13 +93,13 @@ class TJbot():
     # TODO osnova returns 400, using imgur workaround. fix?
     def upload_image(self, img: Image):
         """Upload picture to Osnova through imgur
-        
+
         Arguments:
             img {Image} -- Image to upload
-        
+
         Raises:
             RuntimeError: Failed API requests
-        
+
         Returns:
             result -- Osnova magic json for attachment
         """
@@ -125,7 +125,7 @@ class TJbot():
     # This is here with the hope of fixed API
     def mark_notification_read(self, nid: int):
         """Marks notification as read. Not working for some reason.
-        
+
         Arguments:
             nid {int} -- notification ID
         """
@@ -137,12 +137,12 @@ class TJbot():
 
     def parse_mention(self, mention: str):
         """Parses the mention and removes the mention itself
-        
 
-        
+
+
         Arguments:
             mention {str} -- Message with the mention
-        
+
         Returns:
             str -- Message without mention
         """
@@ -153,13 +153,13 @@ class TJbot():
 
     def get_comment_url_contents(self, url: str):
         """Gets the comment in the url
-        
+
         Arguments:
             url {str} -- URL to the comment
-        
+
         Raises:
             RuntimeError: Error when querying API
-        
+
         Returns:
             comment -- Comment object as dict
         """
@@ -182,11 +182,11 @@ class TJbot():
 
     def reply(self, comment, attach):
         """Reply to specified comment with the specified image
-        
+
         Arguments:
             comment {comment} -- Comment object from API
             attach {attachment} -- raw dict object from Osnova
-        
+
         Raises:
             RuntimeError: API error
         """
@@ -212,10 +212,10 @@ class TJbot():
 
     def poll_mentions(self):
         """Yields all mentions, if there are any
-        
+
         Raises:
             RuntimeError: API query error
-        
+
         Yields:
             mention -- A mention object
         """

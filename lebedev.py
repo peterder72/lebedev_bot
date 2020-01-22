@@ -8,7 +8,7 @@ from time import sleep
 if __name__ == "__main__":
 
     logging.basicConfig(
-        level=logging.INFO
+        level=logging.DEBUG
     )
     logging.getLogger("urllib3").setLevel(logging.WARNING)
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
                     if msg:
                         # Take only the last word
                         if len(msg.split(' ')) > 1:
-                            msg = msg.split(' ')[:-1]
+                            msg = msg.split(' ')[-1]
                         meme = create_lebedev(msg)
                     else:
                         # If mention empty, post classical variant
