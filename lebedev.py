@@ -8,7 +8,7 @@ from time import sleep
 if __name__ == "__main__":
 
     logging.basicConfig(
-        level=logging.DEBUG
+        level=logging.INFO
     )
     logging.getLogger("urllib3").setLevel(logging.WARNING)
 
@@ -29,13 +29,19 @@ if __name__ == "__main__":
                 query = bot.parse_mention(msg_raw)
 
                 if query:
+
                     msg = query.group(1)
 
                     if msg:
+                        # Take only the last word
+                        if len(msg.split(' ')) > 1:
+                            msg = msg.split(' ')[:-1]
                         meme = create_lebedev(msg)
                     else:
+                        # If mention empty, post classical variant
                         meme = create_lebedev('умер')
 
+                    # Attach and reply
                     attach = bot.upload_image(meme)
                     bot.reply(comment, attach)
 

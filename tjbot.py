@@ -12,6 +12,8 @@ from mememaker import create_lebedev
 
 
 class ConfigFile():
+    """Class for working with json config file
+    """
 
     def __init__(self, name='config.json'):
 
@@ -25,6 +27,11 @@ class ConfigFile():
 
     @property
     def last_id(self):
+        """Last seen update ID
+        
+        Returns:
+            int -- ID
+        """
 
         loaded = self.json.get('last_id', 0)
 
@@ -44,19 +51,27 @@ class ConfigFile():
         self.save()
 
     def load(self):
+        """Load configs from the file
+        """
 
         with open(self.name, 'rt') as f:
             self.json = json.load(f)
 
     def save(self):
+        """Dump configs into JSON file
+        """
 
         with open(self.name, 'wt') as f:
             json.dump(self.json, f, indent=4)
 
 
 # TODO put all requests in one method
-# TODO remove unnecessary imports
 class TJbot():
+    """Main class for TJbot
+
+    Raises:
+        RuntimeError: something went wrong with API
+    """
 
     base_url = 'https://api.tjournal.ru/v1.8'
 
@@ -77,6 +92,17 @@ class TJbot():
 
     # TODO osnova returns 400, using imgur workaround. fix?
     def upload_image(self, img: Image):
+        """Upload picture to Osnova through imgur
+        
+        Arguments:
+            img {Image} -- Image to upload
+        
+        Raises:
+            RuntimeError: Failed API requests
+        
+        Returns:
+            result -- Osnova magic json for attachment
+        """
 
         url = picture_uploader.upload_picture_imgur(img)
 
@@ -98,6 +124,11 @@ class TJbot():
     # TODO not working in Osnova?
     # This is here with the hope of fixed API
     def mark_notification_read(self, nid: int):
+        """Marks notification as read. Not working for some reason.
+        
+        Arguments:
+            nid {int} -- notification ID
+        """
 
         requests.post(
             self.base_url + f'/user/me/updates/read/{nid}',
@@ -105,12 +136,33 @@ class TJbot():
         )
 
     def parse_mention(self, mention: str):
+        """Parses the mention and removes the mention itself
+        
+
+        
+        Arguments:
+            mention {str} -- Message with the mention
+        
+        Returns:
+            str -- Message without mention
+        """
 
         query = re.match(self.regex, mention)
 
         return query
 
     def get_comment_url_contents(self, url: str):
+        """Gets the comment in the url
+        
+        Arguments:
+            url {str} -- URL to the comment
+        
+        Raises:
+            RuntimeError: Error when querying API
+        
+        Returns:
+            comment -- Comment object as dict
+        """
 
         r = requests.get(
             self.base_url + '/locate',
@@ -129,6 +181,15 @@ class TJbot():
         return res['data']
 
     def reply(self, comment, attach):
+        """Reply to specified comment with the specified image
+        
+        Arguments:
+            comment {comment} -- Comment object from API
+            attach {attachment} -- raw dict object from Osnova
+        
+        Raises:
+            RuntimeError: API error
+        """
 
         pid = comment['entry']['id']
         cid = comment['id']
@@ -150,6 +211,14 @@ class TJbot():
             raise RuntimeError("Osnova broken: could not post comment")
 
     def poll_mentions(self):
+        """Yields all mentions, if there are any
+        
+        Raises:
+            RuntimeError: API query error
+        
+        Yields:
+            mention -- A mention object
+        """
 
         logging.debug("Geting notifications")
 
@@ -175,6 +244,7 @@ class TJbot():
             if len(notifications) == 0:
                 return []
 
+            # To be written into config
             new_last = 0
 
             for n in notifications:
