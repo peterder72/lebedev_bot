@@ -42,8 +42,12 @@ if __name__ == "__main__":
                         meme = create_lebedev('умер')
 
                     # Attach and reply
-                    attach = bot.upload_image(meme)
-                    bot.reply(comment, attach)
+                    try:
+                        attach = bot.upload_image(meme)
+                        bot.reply(comment, attach)
+                    except RuntimeError:
+                        logging.error("Skipping the response")
+                        continue
 
             logging.debug("Sleeping")
 
