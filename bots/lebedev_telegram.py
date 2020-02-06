@@ -7,7 +7,7 @@ import telegram
 from telegram import InlineQueryResultPhoto
 from telegram.ext import InlineQueryHandler, Updater, CommandHandler
 
-host_lebedev = 'https://temp.osetr.su'
+host_lebedev = 'https://lebedev.osetr.su'
 
 
 def print_help(update, context):
