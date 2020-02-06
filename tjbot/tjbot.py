@@ -2,13 +2,16 @@ import json
 import logging
 import os
 import re
+import sys
 
 import dotenv
 import requests
 from PIL import Image
 
-import picture_uploader
-from mememaker import create_lebedev
+try:
+    from . import picture_uploader
+except ImportError:
+    import picture_uploader
 
 
 class ConfigFile():
@@ -269,12 +272,16 @@ class TJbot():
 
 if __name__ == "__main__":
 
+    sys.path.append(os.path.abspath('../'))
+
+    from liblebedev.mememaker import create_lebedev
+
     logging.basicConfig(
         level=logging.DEBUG
     )
     logging.getLogger("urllib3").setLevel(logging.WARNING)
 
-    dotenv.load_dotenv('auth.env')
+    dotenv.load_dotenv('../auth.env')
 
     bot = TJbot(os.environ.get("TJ_TOKEN"))
 

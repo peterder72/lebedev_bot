@@ -1,0 +1,17 @@
+FROM python:3.8-buster
+RUN useradd --create-home flaskuser
+
+WORKDIR /home/lebedev
+
+COPY . /home/lebedev
+
+RUN chown -R flaskuser /home/lebedev
+RUN chmod -R 750 /home/lebedev
+
+RUN python3 -m pip install -r docker/requirements-server.txt
+
+USER flaskuser
+
+EXPOSE 9898
+
+CMD ["gunicorn", "--bind", "0.0.0.0:9898", "--log-file", "/home/lebedev/gunicorn.log", "wsgi:app"]

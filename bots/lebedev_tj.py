@@ -1,18 +1,24 @@
 import dotenv
 import logging
-from tjbot import TJbot
-from mememaker import create_lebedev
 import os
+
+import sys
+
 from time import sleep
 
 if __name__ == "__main__":
+
+    sys.path.append(os.path.abspath('../'))
+
+    from liblebedev.mememaker import create_lebedev
+    from tjbot.tjbot import TJbot
 
     logging.basicConfig(
         level=logging.DEBUG
     )
     logging.getLogger("urllib3").setLevel(logging.WARNING)
 
-    dotenv.load_dotenv('auth.env')
+    dotenv.load_dotenv('../auth.env')
 
     if os.environ.get("TJ_TOKEN") is None:
         raise RuntimeError("Osnova token not specified")

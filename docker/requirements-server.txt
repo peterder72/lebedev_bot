@@ -1,6 +1,4 @@
 python-dotenv
 pillow
-python-telegram-bot
 flask
-requests
 gunicorn

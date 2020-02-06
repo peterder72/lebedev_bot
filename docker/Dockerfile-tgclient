@@ -1,0 +1,18 @@
+FROM python:3.8-buster
+RUN useradd --create-home lebedevuser
+
+WORKDIR /home/lebedev
+
+COPY bots/lebedev_telegram.py /home/lebedev
+COPY docker/requirements-client.txt /home/lebedev
+COPY auth.env /home/lebedev
+
+
+RUN chown -R lebedevuser /home/lebedev
+RUN chmod -R 750 /home/lebedev
+
+RUN python3 -m pip install -r requirements-client.txt
+
+USER lebedevuser
+
+CMD ["python3", "lebedev_telegram.py"]

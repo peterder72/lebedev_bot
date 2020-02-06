@@ -6,8 +6,6 @@ import dotenv
 import requests
 from PIL import Image
 
-from mememaker import create_lebedev
-
 
 def upload_picture_imgur(img: Image):
 
@@ -19,7 +17,7 @@ def upload_picture_imgur(img: Image):
         raise RuntimeError("No imgur token specified")
 
     with io.BytesIO() as output:
-        img.save(output, format="PNG")
+        img.save(output, format="JPEG")
         img_bin = output.getvalue()
 
     logging.debug("Uploading picture to imgur")
@@ -38,8 +36,3 @@ def upload_picture_imgur(img: Image):
         raise RuntimeError("Failed to upload to imgur")
 
     return r.json()['data']['link']
-
-
-if __name__ == "__main__":
-
-    upload_picture_imgur(create_lebedev('умер'))
