@@ -211,6 +211,7 @@ class TJbot():
         logging.debug(f"Reply API returned {r.status_code}")
 
         if r.status_code != 200:
+            logging.critical(r.json())
             raise RuntimeError("Osnova broken: could not post comment")
 
     def poll_mentions(self):
